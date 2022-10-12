@@ -1,16 +1,20 @@
 {
   "name": "gin-tonic",
-  "version": "0.1.0",
-  "description": "ship sync and hot reloading for urbit development, companion to tonic",
+  "version": "0.2.1",
+  "description": "ship sync and hot reloading for urbit development",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
     "gin": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "ts-node ./src/index.ts",
+    "start": "TONIC=../ ts-node ./src/index.ts",
     "build": "tsc",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "prepare": "cp -R ../tonic/ dist/tonic/ && npm run build"
   },
   "author": "arthyn",
   "license": "MIT",
