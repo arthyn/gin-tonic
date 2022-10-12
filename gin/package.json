@@ -1,6 +1,6 @@
 {
-  "name": "gin",
-  "version": "1.0.0",
+  "name": "gin-tonic",
+  "version": "0.1.0",
   "description": "ship sync and hot reloading for urbit development, companion to tonic",
   "main": "dist/index.js",
   "type": "module",
