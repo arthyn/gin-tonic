@@ -5,6 +5,7 @@ development much nicer.
 
 **gin**: a utility for syncing files from a repository to a clay desk and
 committing on save.
+
 **tonic**: a library which auto refreshes your sail page on commit
 
 ## getting started
@@ -18,12 +19,16 @@ committing on save.
 3. Then run `gin pour` to add the tonic library to your Urbit.
 4. Integrate tonic into your gall application by wrapping your gall agent:
    ```hoon
+    /+  tonic
+    ...
     %-  agent:tonic
     |_  =bowl:gall
     ...
    ```
 5. Include tonic's script in each sail page:
   ```hoon
+  /+  tonic
+  ...
   ;head
     ...
     ;+  (inject:tonic q.byk.bowl)
