@@ -12,7 +12,7 @@ committing on save.
 
 1. First you should install `gin`:
    ```bash
-   npm i gin-tonic
+   npm i -g gin-tonic
    ```
 2. Next run `gin add` to add a workspace which will be used to sync your 
    files from your repository to the Urbit you're working on and commit.
