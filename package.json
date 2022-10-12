@@ -1,0 +1,40 @@
+{
+  "name": "gin",
+  "version": "1.0.0",
+  "description": "ship sync and hot reloading for urbit development, companion to tonic",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "gin": "dist/index.js"
+  },
+  "scripts": {
+    "start": "ts-node ./src/index.ts",
+    "build": "tsc",
+    "lint": "eslint . --fix"
+  },
+  "author": "arthyn",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.8.3",
+    "@types/prompts": "^2.4.1",
+    "@types/signale": "^1.4.4",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "^8.25.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "axios": "^1.1.2",
+    "chalk": "^5.1.0",
+    "commander": "^9.4.1",
+    "conf": "^10.2.0",
+    "fs-extra": "^10.1.0",
+    "node-fetch": "^3.2.10",
+    "node-watch": "^0.7.3",
+    "prompts": "^2.4.2",
+    "signale": "^1.4.0"
+  }
+}
