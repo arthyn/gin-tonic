@@ -4,8 +4,7 @@ import fse from 'fs-extra';
 import chalk from "chalk";
 import prompts from "prompts";
 import { config, Workspace } from "../config.js";
-
-const __dirname = path.resolve(process.env.TONIC || '')
+import dir from '../dir.js';
 
 const ask = (workspaces: Workspace[]) => prompts([
   {
@@ -45,7 +44,7 @@ function resolveHome(filepath: string) {
 }
 
 async function sync(wksp: Workspace) {
-  const source = resolveHome(path.join(__dirname, 'tonic'));
+  const source = resolveHome(path.join(dir, 'tonic'));
   const pier = resolveHome(wksp.pier);
   
   fse.copySync(source, path.join(pier, wksp.desk))

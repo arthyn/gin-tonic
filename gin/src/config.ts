@@ -27,4 +27,8 @@ const schema = {
   } as ValueSchema
 }
 
-export const config = new conf<ConfigSchema>({ schema });
+export const config = new conf<ConfigSchema>({ 
+  schema, 
+  projectName: 'gin-tonic', 
+  projectVersion: '0.2.1' 
+});
