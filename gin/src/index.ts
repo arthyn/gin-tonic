@@ -1,22 +1,47 @@
 #! /usr/bin/env node
 
 import { program } from 'commander';
-import add from './commands/add.js';
-import pour from './commands/pour.js';
-import watch from './commands/watch.js';
+import ask from './commands/ask.js';
+import commands from './commands/manifest.js';
 
-program.command('add')
-  .description('Adds a local Urbit ship and a working directory to the list of available workspaces')
-  .action(add);
+const {
+  add,
+  list,
+  pour,
+  remove,
+  watch
+} = commands;
 
-program.command('pour')
+program.command(add.key)
+  .description(add.desc)
+  .action(add.action);
+
+program.command(list.key)
+  .description(list.desc)
+  .action(list.action);
+
+program.command(pour.key)
   .argument('[workspace]', 'the workspace to copy tonic into')
-  .description('Copies the tonic files into your desk')
-  .action(pour);
+  .option('-f, --force', 'Forces copy when source doesn\'t look like a desk')
+  .description(pour.desc)
+  .action(pour.action);
 
-program.command('watch')
+program.command(remove.key)
+  .argument('[workspace]', 'the workspace to remove')
+  .description(remove.desc)
+  .action(remove.action);
+
+program.command(watch.key)
   .argument('[workspace]', 'the workspace to sync')
-  .description('Watches a workspace and syncs file changes to the associated Urbit')
-  .action(watch);
+  .option('-f, --force', 'Forces sync to happen when source doesn\'t look like a desk')
+  .description(watch.desc)
+  .action(watch.action);
+
+program.command('ask', {
+  isDefault: true,
+  hidden: true,
+}).action(ask);
+
+program.version('0.3.0');
 
 program.parse();

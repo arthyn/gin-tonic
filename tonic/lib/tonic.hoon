@@ -17,8 +17,13 @@
   ::
   +$  card  card:agent:gall
   ::
+  +$  state-0
+    $:  %0
+        on=?
+    ==
+  ::
   ++  helper
-    |_  [=bowl:gall ~]
+    |_  [=bowl:gall state-0]
     +*  state  +<+
     ++  play-card
       |=  =card
@@ -52,7 +57,7 @@
   ::
   ++  agent
     |=  inner=agent:gall
-    =|  ~
+    =|  state-0
     =*  state  -
     %+  verb  |
     ^-  agent:gall
@@ -67,12 +72,20 @@
       =^  cards   state  (play-cards:up cards)
       [cards this]
     ::
-    ++  on-save  on-save:og
+    ++  on-save  !>([[%tonic state] on-save:og])
     ++  on-load
       |=  ole=vase
       ^-  (quip card _this)
       =/  give  [%give %fact ~[/tonic/current] cass+!>(get-rev:up)]
-      =^  cards  inner  (on-load:og ole)
+      ?.  ?=([[%tonic *] *] q.ole)
+        =^  cards  inner  (on-load:og ole)
+        =^  cards  state  (play-card:up give)
+        =^  cards  state  (play-cards:up cards)
+        [cards this]
+      ::
+      =+  !<([[%tonic old=state-0] ile=vase] ole)
+      =.  state  old
+      =^  cards  inner  (on-load:og ile)
       =^  cards  state  (play-card:up give)
       =^  cards  state  (play-cards:up cards)
       [cards this]
@@ -110,8 +123,13 @@
       [cards this]
     ::
     ++  on-poke
-      |=  cage
+      |=  [=mark =vase]
       ^-  (quip card _this)
+      ?:  ?=(%tonic mark)
+        ?-  !<(?(%on %off) vase)
+          %on  `this(on &)
+          %off  `this(on |)
+        ==
       =^  cards  inner  (on-poke:og +<)
       =^  cards  state  (play-cards:up cards)
       [cards this]

@@ -23,7 +23,7 @@ const ask = (workspaces: Workspace[]) => prompts([
 
 const log = new sig.Signale({ interactive: true, scope: 'gin' })
 
-export default async function watch(wksp?: string) {
+export default async function watch(wksp?: string, options?: { force: boolean }) {
   const workspaces = config.get('workspaces', []);
 
   if (!workspaces || workspaces.length === 0) {
@@ -35,10 +35,10 @@ export default async function watch(wksp?: string) {
 
   if (!space) {
     const res = await ask(workspaces);
-    return sync(res.wksp);
+    return sync(res.wksp, options?.force || false);
   }
 
-  return sync(space);
+  return sync(space, options?.force || false);
 }
 
 function resolveHome(filepath: string) {
@@ -48,8 +48,18 @@ function resolveHome(filepath: string) {
   return filepath;
 }
 
-async function sync(wksp: Workspace) {
+async function sync(wksp: Workspace, force: boolean) {
   const source = resolveHome(wksp.source);
+  const files = await fsp.readdir(source, {
+    withFileTypes: true
+  });
+  const isDesk = files.some(f => ['desk.bill', 'sys.kelvin', 'desk.docket-0'].includes(f.name));
+
+  if (!isDesk && !force) {
+    console.log(chalk.yellow('The desk directory provided does not look like an Urbit desk, aborting. This block can be overridden with -f'));
+    return;
+  }
+
   const pier = resolveHome(wksp.pier);
   
   const portPath = path.join(pier, '.http.ports');
