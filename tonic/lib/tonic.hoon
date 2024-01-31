@@ -149,7 +149,6 @@
   |=  desk=@tas
   ^-  manx
   =/  dek=tape  (trip desk)
-  ~&  dek
   =-  ;script(type "module"): {-}
   """
   import urbitHttpApi from 'https://cdn.skypack.dev/@urbit/http-api';
