@@ -5,10 +5,8 @@
 ::    subscription endpoint that provides the current desk commit.
 ::
 ::    the included $inject gate will add a script into your sail page
-::    that will watch for new desk commits and refresh the page if it 
+::    that will watch for new desk commits and refresh the page if it
 ::    receives a new commit.
-::
-/+  default-agent, dbug, verb
 ::
 |%
 ++  agent
@@ -59,11 +57,9 @@
     |=  inner=agent:gall
     =|  state-0
     =*  state  -
-    %+  verb  |
     ^-  agent:gall
     |_  =bowl:gall
     +*  this    .
-        def   ~(. (default-agent this %|) bowl)
         og    ~(. inner bowl)
         up    ~(. helper bowl state)
     ++  on-init
@@ -96,9 +92,9 @@
       ?.  ?=([%tonic *] path)
         =^  cards  inner  (on-watch:og path)
         =^  cards  state  (play-cards:up cards)
-      [cards this]
+        [cards this]
       =/  give
-        ?+  path  (on-watch:def path)
+        ?+    path  ~|(bad-watch/path !!)
             [%tonic %current ~]
           [%give %fact ~[/tonic/current] cass+!>(get-rev:up)]
         ==
@@ -161,7 +157,7 @@
 
   const api = new urbitHttpApi('', '', '{dek}');
   api.ship = window.ship;
-  
+
   let first = true;
   let oldRev = 0;
 
@@ -169,7 +165,7 @@
     if (oldRev !== cass.rev && !first) \{
       location.reload();
     }
-      
+
     first = false;
     oldRev = cass.rev;
   }
