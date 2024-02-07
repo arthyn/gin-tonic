@@ -9,141 +9,79 @@
 ::    receives a new commit.
 ::
 |%
+++  cass               ::  the latest $cass for the given $bowl
+  |=  =bowl:gall
+  ^-  cass:clay
+  =/  our  (scot %p our.bowl)
+  =/  wen  (scot %da now.bowl)
+  .^(cass:clay /cw/[our]/[q.byk.bowl]/[wen])
+--
+|%
 ++  agent
-  ^-  $-(agent:gall agent:gall)
-  |^  agent
+  |=  =agent:gall
+  ^-  agent:gall
+  |_  =bowl:gall
+  +*  this  .
+      ag    ~(. agent bowl)
   ::
-  +$  card  card:agent:gall
+  ++  on-init
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  on-init:ag
+    [cards this]
   ::
-  +$  state-0
-    $:  %0
-        on=?
+  ++  on-save   on-save:ag
+  ::
+  ++  on-load
+    |=  ole=vase
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-load:ag ole)
+    :_  this
+    %+  snoc  cards
+    [%give %fact ~[/tonic/current] cass+!>((cass bowl))]
+  ::
+  ++  on-watch
+    |=  =path
+    ^-  (quip card:agent:gall agent:gall)
+    ?.  ?=([%tonic *] path)
+      =^  cards  agent  (on-watch:ag path)
+      [cards this]
+    :_  this
+    ?+    path  ~|(bad-watch/path !!)
+        [%tonic %current ~]
+      [%give %fact ~[/tonic/current] cass+!>((cass bowl))]~
     ==
   ::
-  ++  helper
-    |_  [=bowl:gall state-0]
-    +*  state  +<+
-    ++  play-card
-      |=  =card
-      ^-  (quip ^card _state)
-      ?.  ?=([%give %fact *] card)  [[card]~ state]
-      ?:  =(~ paths.p.card)  [[card]~ state]
-      =/  [int=(list path) ext=(list path)]
-        %+  skid  paths.p.card
-        |=  =path
-        ?=([%~.~ %tonic *] path)
-      =/  caz=(list ^card)
-        ?:  =(~ ext)  ~
-        [card(paths.p ext)]~
-      [caz state]
-    ::
-    ++  play-cards
-      |=  cards=(list card)
-      ^-  (quip card _state)
-      =|  out=(list card)
-      |-
-      ?~  cards  [out state]
-      =^  caz  state  (play-card i.cards)
-      $(out (weld out caz), cards t.cards)
-    ::
-    ++  get-rev
-      ^-  cass:clay
-      =/  our  (scot %p our.bowl)
-      =/  wen  (scot %da now.bowl)
-      .^(cass:clay /cw/[our]/[q.byk.bowl]/[wen])
-    --
+  ++  on-agent
+    |=  [=wire =sign:agent:gall]
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-agent:ag wire sign)
+    [cards this]
   ::
-  ++  agent
-    |=  inner=agent:gall
-    =|  state-0
-    =*  state  -
-    ^-  agent:gall
-    |_  =bowl:gall
-    +*  this    .
-        og    ~(. inner bowl)
-        up    ~(. helper bowl state)
-    ++  on-init
-      ^-  (quip card _this)
-      =^  cards   inner  on-init:og
-      =^  cards   state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-save  !>([[%tonic state] on-save:og])
-    ++  on-load
-      |=  ole=vase
-      ^-  (quip card _this)
-      =/  give  [%give %fact ~[/tonic/current] cass+!>(get-rev:up)]
-      ?.  ?=([[%tonic *] *] q.ole)
-        =^  cards  inner  (on-load:og ole)
-        =^  cards  state  (play-card:up give)
-        =^  cards  state  (play-cards:up cards)
-        [cards this]
-      ::
-      =+  !<([[%tonic old=state-0] ile=vase] ole)
-      =.  state  old
-      =^  cards  inner  (on-load:og ile)
-      =^  cards  state  (play-card:up give)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-watch
-      |=  =path
-      ^-  (quip card _this)
-      ?.  ?=([%tonic *] path)
-        =^  cards  inner  (on-watch:og path)
-        =^  cards  state  (play-cards:up cards)
-        [cards this]
-      =/  give
-        ?+    path  ~|(bad-watch/path !!)
-            [%tonic %current ~]
-          [%give %fact ~[/tonic/current] cass+!>(get-rev:up)]
-        ==
-      =^  cards  state  (play-card:up give)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-agent
-      |=  [=wire =sign:agent:gall]
-      ^-  (quip card _this)
-      =^  cards  inner  (on-agent:og wire sign)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-peek  on-peek:og
-    ::
-    ++  on-leave
-      |=  =path
-      ^-  (quip card _this)
-      =^  cards  inner  (on-leave:og path)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-poke
-      |=  [=mark =vase]
-      ^-  (quip card _this)
-      ?:  ?=(%tonic mark)
-        ?-  !<(?(%on %off) vase)
-          %on  `this(on &)
-          %off  `this(on |)
-        ==
-      =^  cards  inner  (on-poke:og +<)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-arvo
-      |=  [=wire sign=sign-arvo:agent:gall]
-      ^-  (quip card _this)
-      =^  cards  inner  (on-arvo:og wire sign)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    ::
-    ++  on-fail
-      |=  [term tang]
-      ^-  (quip card _this)
-      =^  cards  inner  (on-fail:og +<)
-      =^  cards  state  (play-cards:up cards)
-      [cards this]
-    --
+  ++  on-peek  on-peek:ag
+  ::
+  ++  on-leave
+    |=  =path
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-leave:ag path)
+    [cards this]
+  ::
+  ++  on-poke
+    |=  [=mark =vase]
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-poke:ag mark vase)
+    [cards this]
+  ::
+  ++  on-arvo
+    |=  [=wire =sign-arvo:agent:gall]
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-arvo:ag wire sign-arvo)
+    [cards this]
+  ::
+  ++  on-fail
+    |=  [=term =tang]
+    ^-  (quip card:agent:gall agent:gall)
+    =^  cards  agent  (on-fail:ag term tang)
+    [cards this]
   --
 ++  inject
   |=  desk=@tas
@@ -157,16 +95,12 @@
   const api = new urbitHttpApi('', '', '{dek}');
   api.ship = window.ship;
 
-  let first = true;
-  let oldRev = 0;
-
-  function check(cass) \{
-    if (oldRev !== cass.rev && !first) \{
+  let oldRev = undefined;
+  function check(newCass) \{
+    if (oldRev && oldRev !== newCass.rev) \{
       location.reload();
     }
-
-    first = false;
-    oldRev = cass.rev;
+    oldRev = newCass.rev;
   }
 
   api.subscribe(\{
