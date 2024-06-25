@@ -11,10 +11,20 @@
 |%
 ++  cass               ::  the latest $cass for the given $bowl
   |=  =bowl:gall
-  ^-  cass:clay
+  ^-  card:agent:gall
   =/  our  (scot %p our.bowl)
-  =/  wen  (scot %da now.bowl)
-  .^(cass:clay /cw/[our]/[q.byk.bowl]/[wen])
+  =/  now  (scot %da now.bowl)
+  :*  %give  %fact
+      ~[/tonic/current]
+      cass+!>(.^(cass:clay /cw/[our]/[q.byk.bowl]/[now]))
+  ==
+++  next               ::  card to subscribe to desk file updates
+  |=  =bowl:gall
+  ^-  card:agent:gall
+  :*  %pass  /tonic/update
+      %arvo  %c
+      [%warp our.bowl q.byk.bowl ~ %next %x da+now.bowl /]
+  ==
 --
 |%
 ++  agent
@@ -36,8 +46,7 @@
     ^-  (quip card:agent:gall agent:gall)
     =^  cards  agent  (on-load:ag ole)
     :_  this
-    %+  snoc  cards
-    [%give %fact ~[/tonic/current] cass+!>((cass bowl))]
+    (welp cards ~[(cass bowl) (next bowl)])
   ::
   ++  on-watch
     |=  =path
@@ -47,8 +56,7 @@
       [cards this]
     :_  this
     ?+    path  ~|(bad-watch/path !!)
-        [%tonic %current ~]
-      [%give %fact ~[/tonic/current] cass+!>((cass bowl))]~
+      [%tonic %current ~]  [(cass bowl)]~
     ==
   ::
   ++  on-agent
@@ -74,8 +82,13 @@
   ++  on-arvo
     |=  [=wire =sign-arvo:agent:gall]
     ^-  (quip card:agent:gall agent:gall)
-    =^  cards  agent  (on-arvo:ag wire sign-arvo)
-    [cards this]
+    ?.  ?=([%tonic *] wire)
+      =^  cards  agent  (on-arvo:ag wire sign-arvo)
+      [cards this]
+    :_  this
+    ?+    wire  ~|(bad-arvo/wire !!)
+      [%tonic %update ~]  ~[(cass bowl) (next bowl)]
+    ==
   ::
   ++  on-fail
     |=  [=term =tang]
